@@ -1,0 +1,112 @@
+<ion-header class="barfix">
+  <button ion-button large navPop color="light" clear>
+    <ion-icon name="arrow-back" color="light"></ion-icon>   
+  </button>
+</ion-header>
+
+<ion-menu side="right" [content]="content">
+
+  <ion-header class="menuheadfix">
+    <ion-navbar>
+      <ion-title >目录</ion-title>
+    </ion-navbar>
+  </ion-header>
+
+  <ion-content><!--side menu-->
+
+    <div [hidden]="pageState!='interneterror' " class="pagestatewraper">
+      <div style="display:table-cell">
+        <div>
+          <font size="72"><ion-icon name="code-working"></ion-icon></font>  
+        </div>
+        <p>网络错误，请稍后再试</p>
+      </div>
+    </div>
+
+    <div [hidden]="pageState!='loading'" class="pagestatewraper">
+      <div style="display:table-cell">
+        <div>
+          <font size="72"><ion-icon name="flash"></ion-icon></font>
+        </div>
+        <p>加载中...</p>
+      </div>
+    </div>
+
+    <div class="menulist" [hidden]="pageState!='loaded'">
+      <div id="subitem" *ngFor="let it of itemList.son">
+        <p id="title" (click)="inPageGoto(it.id)" [innerHTML]="it.name"></p>
+        <p id="detail" *ngFor="let dt of it.son" (click)="inPageGoto(dt.id)" [innerHTML]="dt.name"></p>
+      </div>
+    </div>
+  </ion-content>
+
+</ion-menu>
+<ion-nav #content swipeBackEnabled="false"></ion-nav>
+
+<ion-content padding class="contentcardfix darkback">
+
+  <div [hidden]="pageState!='interneterror' " class="pagestatewraper">
+    <div style="display:table-cell">
+      <div>
+        <font size="72"><ion-icon name="code-working"></ion-icon></font>
+      </div>
+      <p>网络错误，请稍后再试</p>
+    </div>
+  </div>
+
+  <div [hidden]="pageState!='loading'" class="pagestatewraper">
+    <div style="display:table-cell">
+      <div>
+        <font size="72"><ion-icon name="flash"></ion-icon></font>
+      </div>
+      <p>加载中...</p>
+    </div>
+  </div>
+
+  <div [hidden]="pageState!='loaded'">
+    <img name="bigPicShower" #bigPicShower src="{{picUrl}}" imageViewer/>
+    <ion-list>
+      <ion-card class="titlecardfix">
+        <p id="title" [innerHTML]="(itemList|dsPipe:inPageSearchText).name"  ></p>
+        <div id="detail">
+          <div *ngFor="let it of (itemList|dsPipe:inPageSearchText).son">
+            <a (click)="inPageGoto(it.id)" [innerHTML]="it.name"></a>
+            <p [innerHTML]="it.content" (click)=(showBigPic($event))></p>
+          </div>
+        </div>
+      </ion-card>
+
+
+      <ion-card class="cardcardfix" *ngFor="let it of (itemList|dsPipe:inPageSearchText).son">
+        <div>
+          <div id="title" attr.name="{{it.id}}" [innerHTML]="it.name" style="float:left "></div>
+          <button ion-button [hidden]="it.favor == true" (click)="addFav(subject, it.id)" small style="float:right; position:relative; top:-4px">收藏</button>
+          <button ion-button color="danger" [hidden]="it.favor == false" (click)="deleteFavor(subject, it.id); changeFav(it.id)" small style="float:right; position:relative; top:-4px">取消</button>
+          <br><br>
+        </div>
+        <div id="main">
+          <div id="detail" style="-webkit-box-orient : block-axis">
+            <div id="sondetail" *ngFor="let dt of it.son" attr.name="{{dt.id}}">
+              <p id="sontitle" [innerHTML]="dt.name" style="float:left"></p>
+
+              <button ion-button [hidden]="dt.favor == true || dt.name ==''" (click)="addFav(subject, dt.id)" small style="float:right; position:relative; top:-4px">收藏</button>
+              <button ion-button color="danger" [hidden]="dt.favor == false || dt.name ==''" (click)="deleteFavor(subject, dt.id); changeFav(dt.id)" small style="float:right; position:relative; top:-4px">取消</button>
+              <br><br>
+              <div id="grandsondetail" [innerHTML]="dt.content" (click)=(showBigPic($event))></div>
+            </div>
+          </div>
+        </div>
+      </ion-card>
+    </ion-list>
+  </div>
+  
+  <ion-fab right bottom class="fabpositionfix">
+      <button ion-fab color="light">   <!--getPageState()-->
+        目录
+      	<!--<ion-icon name="arrow-back"></ion-icon>-->
+      </button>
+  </ion-fab>
+  <!--
+  <div [MathJax]="mathjaxtest"></div>
+  -->
+</ion-content>

@@ -1,0 +1,199 @@
+page-home {
+    span.sr{
+        background-color: yellow;
+    }
+    ion-header {
+        height:60px!important;
+        background-color: #00BBD3;
+    }
+    .barfix {
+        height: 56px;
+        ion-navbar{
+            .toolbar-background{
+                background-color:#00BBD3;
+            }
+            .toolbar-content{
+                display: block;
+                padding-top:0px;
+                background-color:#00BBD3;
+                div {
+                    display:flex;
+                    button {
+                        flex:1;
+                        font-size: larger;
+                    }
+                }
+                ion-segment {
+                    ion-segment-button {
+                        font-size: larger!important;
+                        color: white!important;
+                    }
+                }
+            }
+            ion-buttons button{
+                width: 32px;
+            }
+        }
+    }
+    .menuheadfix ion-navbar{
+        .toolbar-background{
+            background-color:#00BBD3;
+        }
+        .toolbar-title{
+            color:white;
+            font-size:27px;
+            padding-left: 25px;
+        }
+    } 
+    .menulist {
+        padding-left: 30px;
+        padding-top: 10px;
+        #subitem {
+            padding-bottom: 15px;
+        }
+        #title {
+            color:black;
+        }
+        #detail {
+            color:#9a9a9a;
+        }
+    }
+    .contentcardfix div{
+        padding: 0px!important;
+        .spanpic {
+            display: table;
+        }
+    }
+    .titlecardfix{
+        width: 100%!important;
+        margin-top: 0px!important;
+        margin-bottom: 5px!important;
+        margin-right: 0px!important;
+        margin-left: 0px!important;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-right: 15px!important;
+        padding-left: 15px!important;
+        #title{
+            font-size: x-large;
+        }
+        #detail {
+            padding-left: 15px!important;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            div {
+                margin-top: 5px;
+                margin-bottom: 5px;
+                a{
+                    color: #00bbd3;
+                    font-size: larger;
+                }
+                p{
+                    padding-left: 10px !important;
+                }
+            }
+        }
+    }
+    .cardcardfix {
+        width: 100%!important;
+        margin-top: 5px !important;
+        margin-bottom: 5px!important;
+        margin-right: 0px!important;
+        margin-left: 0px!important;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-right: 0px!important;
+        padding-left: 0px!important;
+
+        #title{
+            font-size: large;
+            margin-bottom:8px!important;
+            border-left: 5px solid #00bbd3;
+            padding-left: 10px!important;
+        }
+        div#main {
+            width: 100%!important;
+            margin-top: 0px!important;
+            margin-bottom: 0px!important;
+            margin-right: 0px!important;
+            margin-left: 0px!important;
+            padding-top: 0px;
+            padding-bottom: 0px;
+            padding-right: 0px!important;
+            padding-left: 15px!important;
+            #detail {
+                display: block;
+                margin-top: 5px;
+                margin-bottom: 5px;
+                #sondetail {
+                    #sontitle{
+                        font-size: large;
+                    }
+                    padding-left:2px!important;
+                    #grandsondetail {
+                        padding-left:20px!important;
+                        padding-right:20px!important;
+                    }
+                }
+            }
+        }
+    }
+    .listtitle{
+        height: 2.1em;
+        background-color: #dedede;
+        border-bottom: 1px solid #bbbbbb;
+        border-top: 1px solid #bbbbbb;
+        div{
+            height: 2.1em;
+            margin-top: 0.2em;
+        }
+        .button-effect {
+            opacity: 0;
+        }
+    }
+    .listitemfix{
+        padding-left:0px !important;
+        div {
+            padding-left:16px !important;
+            div {
+                padding-left:0px !important;
+                ion-label div {
+                    #title{
+                        font-size: larger;
+                        color: black;
+                    }
+                    #detail {
+                        margin: 5px;
+                        p {
+                            margin: 0px;
+                            color: grey;
+                            font-size: large;
+                            overflow: hidden;
+                            display: -webkit-box;
+                            padding-left: 15px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .fabpositionfix {
+        bottom: 5%;
+        right: 5%;
+    }
+    .pagestatewraper {
+        text-align: center;
+        width: 100%;
+        height: 100%;
+        display: table;
+        div {
+            //display:table-cell; //写上就炸，只能直接写页面上
+            vertical-align:middle;
+            div {
+                width: 100px;
+                height: 100px;
+                margin:0 auto;
+            }
+        }
+    }
+}
