@@ -66,6 +66,7 @@
   <div [hidden]="pageState!='loaded'">
     <img name="bigPicShower" #bigPicShower src="{{picUrl}}" imageViewer/>
     <ion-list>
+      <div>二级目录集合</div>
       <ion-card class="titlecardfix">
         <p id="title" [innerHTML]="(itemList|dsPipe:inPageSearchText).name"  ></p>
         <div id="detail">
@@ -76,10 +77,10 @@
         </div>
       </ion-card>
 
-
+      <div>正文开始</div>
       <ion-card class="cardcardfix" *ngFor="let it of (itemList|dsPipe:inPageSearchText).son">
         <div>
-          <div id="title" attr.name="{{it.id}}" [innerHTML]="it.name" style="float:left "></div>
+          <div id="title" attr.name="{{it.id}}" [innerHTML]="it.name" style="float:left " (click)="presentPopover($event)"></div>
           <button ion-button [hidden]="it.favor == true" (click)="addFav(subject, it.id)" small style="float:right; position:relative; top:-4px">收藏</button>
           <button ion-button color="danger" [hidden]="it.favor == false" (click)="deleteFavor(subject, it.id); changeFav(it.id)" small style="float:right; position:relative; top:-4px">取消</button>
           <br><br>
@@ -87,7 +88,7 @@
         <div id="main">
           <div id="detail" style="-webkit-box-orient : block-axis">
             <div id="sondetail" *ngFor="let dt of it.son" attr.name="{{dt.id}}">
-              <p id="sontitle" [innerHTML]="dt.name" style="float:left"></p>
+              <p id="sontitle" [innerHTML]="dt.name" style="float:left" (click)="presentPopover($event)"></p>
 
               <button ion-button [hidden]="dt.favor == true || dt.name ==''" (click)="addFav(subject, dt.id)" small style="float:right; position:relative; top:-4px">收藏</button>
               <button ion-button color="danger" [hidden]="dt.favor == false || dt.name ==''" (click)="deleteFavor(subject, dt.id); changeFav(dt.id)" small style="float:right; position:relative; top:-4px">取消</button>
@@ -99,7 +100,7 @@
       </ion-card>
     </ion-list>
   </div>
-  
+
   <ion-fab right bottom class="fabpositionfix">
       <button ion-fab color="light">   <!--getPageState()-->
         目录

@@ -5,10 +5,15 @@ import { UserInfo } from '../../app/app.module';
 import { AllresultProvider } from '../../providers/allresult/allresult';
 import { PopoverController } from 'ionic-angular';
 import { ImageViewerController } from 'ionic-img-viewer';
+import { ListPage } from '../list/list';
 
+// @Component下面的类是一个组件类。一个组件由一个组件Class、htmlTemplate、cssStyle
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
+  //metadata(元数据)就是下面的一个个选项
+  selector: 'page-home',//css选择器，在父元素的html中去找
+  templateUrl: 'home.html'//组件的html地址
+  //styleUrl
+  //providers ：使用一个 令牌 配置该指令或组件的 注入器，该令牌会映射到一个依赖项的提供商
 })
 export class HomePage {
 
@@ -22,11 +27,32 @@ export class HomePage {
   positon:string = "";
   dsresult:object =[];
   picUrl:string = "";
-  constructor(public imgViewerCtrl:ImageViewerController,public allresult:AllresultProvider,public menuCtrler:MenuController,public navParams: NavParams,private sanitize:DomSanitizer,public navCtrl: NavController,public popoverCtrl: PopoverController) {
+  clickText:string;
+    constructor(public imgViewerCtrl:ImageViewerController,public allresult:AllresultProvider,public menuCtrler:MenuController,public navParams: NavParams,private sanitize:DomSanitizer,public navCtrl: NavController,public popoverController: PopoverController) {
+	//navParams是跳转到这个页面的路由传来的参数
     this.subject=navParams.get('subject') || "che";
-		this.id=navParams.get('id') || 3;
-    this.positon=navParams.get('pos') || "";
+	this.id=navParams.get('id') || 3;
+	this.positon=navParams.get('pos') || "2";
   }
+
+  async presentPopover(ev){ 
+	this.clickText = ev.target.innerHTML;
+	console.log(this.clickText);
+	let popover=this.popoverController.create(ListPage,{data:this.clickText},{});
+
+	let pos ={
+		target : {
+		  getBoundingClientRect : () => {
+			return {
+			  top: ev.target.getBoundingClientRect().y+ev.target.getBoundingClientRect().height+10,
+			  left: ev.target.getBoundingClientRect().left-30
+			};
+		  }
+		}
+	};
+	popover.present({ev:pos});
+  }
+
 
   getDetailResultA() {
 		this.getDetailResult(this.subject,this.id);
