@@ -17,45 +17,65 @@ import { ListPage } from '../list/list';
 })
 export class HomePage {
 
+  //页面是否在加载
   pageState:string = "loading";
+  //
   id:number = -1;
+  //默认科目，数学
   subject:string = "mth";
+  //详情页面的全部结果
   itemList:any = [];
+  //
   inPageSearchText:string = "";
+  //
   resultList:any = [];
+  //
   itemRet = [];
+  //锚点
   positon:string = "";
+  //
   dsresult:object =[];
+  //图片地址
   picUrl:string = "";
+  //二/三级标题
   clickText:string;
+  //popover结果
+  popOverResult:any;
+  //决定页面内容
     constructor(public imgViewerCtrl:ImageViewerController,public allresult:AllresultProvider,public menuCtrler:MenuController,public navParams: NavParams,private sanitize:DomSanitizer,public navCtrl: NavController,public popoverController: PopoverController) {
 	//navParams是跳转到这个页面的路由传来的参数
+	//获取科目、？、锚点
     this.subject=navParams.get('subject') || "che";
 	this.id=navParams.get('id') || 3;
 	this.positon=navParams.get('pos') || "2";
   }
-
+  //弹出框
   async presentPopover(ev){ 
 	this.clickText = ev.target.innerHTML;
-	console.log(this.clickText);
-	let popover=this.popoverController.create(ListPage,{data:this.clickText},{});
-
-	let pos ={
-		target : {
-		  getBoundingClientRect : () => {
-			return {
-			  top: ev.target.getBoundingClientRect().y+ev.target.getBoundingClientRect().height+10,
-			  left: ev.target.getBoundingClientRect().left-30
-			};
-		  }
-		}
-	};
+	this.popOverResult=this.allresult.popOver(this.clickText);
+	console.log(this.popOverResult);
+	if(this.popOverResult.linkExit==false&&this.popOverResult.exampleExit==false)
+	console.log(" ");
+	else{
+		let popover=this.popoverController.create(ListPage,{data:this.popOverResult},{});
+		let pos ={
+			target : {
+			getBoundingClientRect : () => {
+				return {
+				top: ev.target.getBoundingClientRect().y+ev.target.getBoundingClientRect().height+10,
+				left: ev.target.getBoundingClientRect().left-30
+				};
+			}
+			}
+		};
 	popover.present({ev:pos});
-  }
+	}
+}
 
 
   getDetailResultA() {
 		this.getDetailResult(this.subject,this.id);
+		console.log("123");
 		console.log(UserInfo.loginState);
   }
   
@@ -63,18 +83,24 @@ export class HomePage {
     this.pageState = "loading";
 		//this.srProvider.load(subject,word).then(this.getSearchResultSuccess,this.getSearchResultError);
 		this.allresult.detail(subject,id).subscribe(result => {
-      		let tmpstr = JSON.stringify(result);
+			console.log("页面内容是：");
+			console.log(result);
+			  let tmpstr = JSON.stringify(result);
+			  //如果返回的不是对象，网络错误
 			if(typeof(result)!="object"){
 				this.pageState="interneterror";
 				return;
 			}
+			//
 			console.log(JSON.parse(tmpstr));
 			if(JSON.parse(tmpstr).length==0){
 				this.pageState="emptyresult";//impossible
 			}else{
 				console.log(JSON.parse(tmpstr));
+				//全部结果
 				this.itemList = JSON.parse(tmpstr).detail;
 				console.log(this.itemList);
+				//this.itemList.son.length二级标题长度
 				for(var i=0; i<this.itemList.son.length; i++){
 					/*if(this.itemList.son[i].son == null)
 						console.log("下面没了");
@@ -88,9 +114,11 @@ export class HomePage {
 						}
 					}*/ //新版本的库，未完成
 					for(var j=0; j<this.itemList.son[i].son.length; j++){
+						//i代表二级标题，j代表三级标题
 						this.itemList.son[i].son[j].content = this.sanitize.bypassSecurityTrustHtml(this.itemList.son[i].son[j].content);
 					}
 				}
+				//完成数据处理
 				console.log(this.itemList);
 				this.pageState="loaded";
 				if(this.positon != ""){
@@ -117,7 +145,8 @@ export class HomePage {
 		fc();
 		//window.scroll({"behavior": "smooth", "top": document.getElementsByName(place)[0].offsetTop});
   }
-  
+
+  //页面初始化
   ionViewDidLoad() {
 		this.getDetailResultA();
 		/*document.onclick = function($event:any){

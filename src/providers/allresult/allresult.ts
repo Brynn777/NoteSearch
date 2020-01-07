@@ -28,9 +28,44 @@ export class AllresultProvider {
         "http://60.205.113.61:8080/What3/Points.json?action=detail&id=" + id + "&subject=" + subject + "&up=" + UserInfo.loginState + "&uid=" + UserInfo.wechatOpenId + "&utoken=" + UserInfo.wechatToken
       )
     }else{
+      console.log("没有登录")
       return this.http.get(
         "http://60.205.113.61:8080/What3/Points.json?action=detail&id=" + id + "&subject=" + subject
       )
+    }
+  }
+  popOver(text:string) {
+    return{
+      "linkExit":true,
+      "link":[
+        {
+          "detailId":10086 ,//真实的detail页面id
+          "anchor": 3 //锚点
+        },
+        {
+          "detailId":10010 ,//真实的detail页面id
+          "anchor": 2 //锚点
+        }
+
+      ],
+      "exampleExit":true,
+      "example": [ //例题
+        {
+            "id": 1,
+            "name": "细胞膜", // 例题标题
+            "content": "/what5/examples/subject/chapter/section/7462.png" //例题图片 url
+        },
+        {
+            "id": 3,
+            "name": "核糖体",
+            "content": "/what5/examples/subject/chapter/section/7462.png" //例题图片 url
+        },
+        {
+            "id": 15,
+            "name": "细胞膜",
+            "content": "/what5/examples/subject/chapter/section/7462.png" //例题图片 url
+        }
+      ]
     }
   }
 

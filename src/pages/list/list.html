@@ -1,6 +1,19 @@
 
 
 <ion-content class="popBox">
-
-{{paramText}}
+    <div *ngIf="popOverResult.exampleExit">
+        <div *ngFor="let item2 of popOverResult.example" class="asideQue">
+            <img src="http://60.205.113.61:8080+{{item2.content}}" alt="">
+            <div style="position: absolute;top:2px;left:4px">类别：{{item2.name}}</div>
+        </div>
+    </div>
+    <hr>
+    
+    <div *ngIf="popOverResult.linkExit" class="asideLink">
+        <div>更多：</div>
+        <br>
+        <div *ngFor="let item of popOverResult.link">
+            <div (click)="itemTapped($event)">我是知识点{{item.detailId}}可以点我</div>
+        </div>
+    </div>
 </ion-content>
