@@ -36,19 +36,18 @@ export class AllresultProvider {
   }
   popOver(text:string) {
     return{
-      "linkExit":true,
-      "link":[
+      "linkExit": true,
+      "link": [
         {
-          "detailId":10086 ,//真实的detail页面id
+          "detailId": 10086 ,//真实的detail页面id
           "anchor": 3 //锚点
         },
         {
-          "detailId":10010 ,//真实的detail页面id
+          "detailId": 10010 ,//真实的detail页面id
           "anchor": 2 //锚点
         }
-
       ],
-      "exampleExit":true,
+      "exampleExit": true,
       "example": [ //例题
         {
             "id": 1,

@@ -1,6 +1,6 @@
 <ion-header class="barfix">
   <button ion-button large navPop color="light" clear>
-    <ion-icon name="arrow-back" color="light"></ion-icon>   
+    <ion-icon name="arrow-back" style="font-weight: 900;color:rgb(11, 67, 73)"></ion-icon>
   </button>
 </ion-header>
 
@@ -8,16 +8,19 @@
 
   <ion-header class="menuheadfix">
     <ion-navbar>
-      <ion-title >目录</ion-title>
+      <ion-title>目录</ion-title>
     </ion-navbar>
   </ion-header>
 
-  <ion-content><!--side menu-->
+  <ion-content>
+    <!--side menu-->
 
     <div [hidden]="pageState!='interneterror' " class="pagestatewraper">
       <div style="display:table-cell">
         <div>
-          <font size="72"><ion-icon name="code-working"></ion-icon></font>  
+          <font size="72">
+            <ion-icon name="code-working"></ion-icon>
+          </font>
         </div>
         <p>网络错误，请稍后再试</p>
       </div>
@@ -26,7 +29,9 @@
     <div [hidden]="pageState!='loading'" class="pagestatewraper">
       <div style="display:table-cell">
         <div>
-          <font size="72"><ion-icon name="flash"></ion-icon></font>
+          <font size="72">
+            <ion-icon name="flash"></ion-icon>
+          </font>
         </div>
         <p>加载中...</p>
       </div>
@@ -48,7 +53,9 @@
   <div [hidden]="pageState!='interneterror' " class="pagestatewraper">
     <div style="display:table-cell">
       <div>
-        <font size="72"><ion-icon name="code-working"></ion-icon></font>
+        <font size="72">
+          <ion-icon name="code-working"></ion-icon>
+        </font>
       </div>
       <p>网络错误，请稍后再试</p>
     </div>
@@ -57,43 +64,64 @@
   <div [hidden]="pageState!='loading'" class="pagestatewraper">
     <div style="display:table-cell">
       <div>
-        <font size="72"><ion-icon name="flash"></ion-icon></font>
+        <font size="72">
+          <ion-icon name="flash"></ion-icon>
+        </font>
       </div>
       <p>加载中...</p>
     </div>
   </div>
 
   <div [hidden]="pageState!='loaded'">
-    <img name="bigPicShower" #bigPicShower src="{{picUrl}}" imageViewer/>
+    <!-- <img name="bigPicShower" #bigPicShower src="{{picUrl}}" imageViewer /> -->
+    <!-- <div>这是什么图片？</div> -->
     <ion-list>
-      <div>二级目录集合</div>
-      <ion-card class="titlecardfix">
-        <p id="title" [innerHTML]="(itemList|dsPipe:inPageSearchText).name"  ></p>
-        <div id="detail">
-          <div *ngFor="let it of (itemList|dsPipe:inPageSearchText).son">
-            <a (click)="inPageGoto(it.id)" [innerHTML]="it.name"></a>
-            <p [innerHTML]="it.content" (click)=(showBigPic($event))></p>
+      <!-- <div>二级目录集合</div> -->
+      <ion-card class="titlecardfix tipBox">
+        <p id="title" [innerHTML]="(itemList|dsPipe:inPageSearchText).name"
+          style="margin: 0.5em 1em 0.2em;font-weight:700;font-size: 1.8em;color:rgb(42, 73, 75);">
+        </p>
+        <hr style="color:#000000">
+        <div id="detail" style="padding:0em 2em">
+          <div *ngFor="let it of (itemList|dsPipe:inPageSearchText).son" style="margin: 1em;">
+            <a (click)="inPageGoto(it.id)" [innerHTML]="it.name"
+              style="font-size:1.2em;color:rgb(82, 145, 150);font-weight:700"></a>
+            <p [innerHTML]="it.content" (click)=(showBigPic($event))
+              style="margin-left: 2em;color:rgb(123, 169, 173);font-size: 1.05em;font-weight:700"></p>
           </div>
         </div>
       </ion-card>
-
-      <div>正文开始</div>
-      <ion-card class="cardcardfix" *ngFor="let it of (itemList|dsPipe:inPageSearchText).son">
+      <hr style="color:#000000">
+      <ion-card class="cardcardfix secBox" *ngFor="let it of (itemList|dsPipe:inPageSearchText).son">
         <div>
-          <div id="title" attr.name="{{it.id}}" [innerHTML]="it.name" style="float:left " (click)="presentPopover($event)"></div>
-          <button ion-button [hidden]="it.favor == true" (click)="addFav(subject, it.id)" small style="float:right; position:relative; top:-4px">收藏</button>
-          <button ion-button color="danger" [hidden]="it.favor == false" (click)="deleteFavor(subject, it.id); changeFav(it.id)" small style="float:right; position:relative; top:-4px">取消</button>
-          <br><br>
+          <!-- <div style="color:red">这是一个二级标题</div> -->
+          <div>
+            <ion-icon name="filing" style="margin:0 5px;font-size:1.3em"></ion-icon>
+            <div id="title" attr.name="{{it.id}}" [innerHTML]="it.name"
+              style="font-size:1.2em;color:rgb(0, 0, 0);font-weight:700;display: inline-block;line-height:1.3em"
+              (tap)="presentPopover($event)" (press)="tapEvent($event)">
+            </div>
+          </div>
         </div>
-        <div id="main">
+        <div id="main" style="padding:0px 2em">
           <div id="detail" style="-webkit-box-orient : block-axis">
             <div id="sondetail" *ngFor="let dt of it.son" attr.name="{{dt.id}}">
-              <p id="sontitle" [innerHTML]="dt.name" style="float:left" (click)="presentPopover($event)"></p>
-
-              <button ion-button [hidden]="dt.favor == true || dt.name ==''" (click)="addFav(subject, dt.id)" small style="float:right; position:relative; top:-4px">收藏</button>
-              <button ion-button color="danger" [hidden]="dt.favor == false || dt.name ==''" (click)="deleteFavor(subject, dt.id); changeFav(dt.id)" small style="float:right; position:relative; top:-4px">取消</button>
+              <!-- <div style="color:red">这是一个三级标题</div> -->
+              <br>
+              <hr style="height:0px;
+              border-top:1px dotted rgb(235, 235, 235)">
+              <ion-icon name="clipboard" style="margin:0px 5px 0px -20px;font-size:1.3em;font-weight:600"></ion-icon>
+              <div 
+                id="sontitle" 
+                attr.name="{{dt.id}}" 
+                [innerHTML]="dt.name" 
+                (tap)="presentPopover($event)" 
+                style="display:inline-block;font-size:1.1em;font-weight:600;color:rgb(25, 45, 46);line-height:1.3em"
+                (press)="tapEvent($event)">
+              </div>
               <br><br>
-              <div id="grandsondetail" [innerHTML]="dt.content" (click)=(showBigPic($event))></div>
+              <div id="grandsondetail" [innerHTML]="dt.content" (click)=(showBigPic($event))>
+              </div>
             </div>
           </div>
         </div>
@@ -101,11 +129,14 @@
     </ion-list>
   </div>
 
-  <ion-fab right bottom class="fabpositionfix">
-      <button ion-fab color="light">   <!--getPageState()-->
+  <ion-fab right bottom class="fabpositionfix" >
+    <button ion-fab color="light" style="background-color:rgb(86, 190, 197);box-shadow: 0px 2px 5px 3px rgba(0, 0, 0, 0.14)">
+      <!--getPageState()-->
+      <div style="color:black;font-weight:700;font-size:1.1em">
         目录
-      	<!--<ion-icon name="arrow-back"></ion-icon>-->
-      </button>
+      </div>
+      <!--<ion-icon name="arrow-back"></ion-icon>-->
+    </button>
   </ion-fab>
   <!--
   <div [MathJax]="mathjaxtest"></div>

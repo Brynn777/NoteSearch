@@ -42,40 +42,53 @@ export class HomePage {
   //popover结果
   popOverResult:any;
   //决定页面内容
-    constructor(public imgViewerCtrl:ImageViewerController,public allresult:AllresultProvider,public menuCtrler:MenuController,public navParams: NavParams,private sanitize:DomSanitizer,public navCtrl: NavController,public popoverController: PopoverController) {
-	//navParams是跳转到这个页面的路由传来的参数
-	//获取科目、？、锚点
-    this.subject=navParams.get('subject') || "che";
-	this.id=navParams.get('id') || 3;
-	this.positon=navParams.get('pos') || "2";
-  }
-  //弹出框
-  async presentPopover(ev){ 
-	this.clickText = ev.target.innerHTML;
-	this.popOverResult=this.allresult.popOver(this.clickText);
-	console.log(this.popOverResult);
-	if(this.popOverResult.linkExit==false&&this.popOverResult.exampleExit==false)
-	console.log(" ");
-	else{
-		let popover=this.popoverController.create(ListPage,{data:this.popOverResult},{});
-		let pos ={
-			target : {
-			getBoundingClientRect : () => {
-				return {
-				top: ev.target.getBoundingClientRect().y+ev.target.getBoundingClientRect().height+10,
-				left: ev.target.getBoundingClientRect().left-30
-				};
-			}
-			}
-		};
-	popover.present({ev:pos});
+	constructor(public imgViewerCtrl:ImageViewerController,public allresult:AllresultProvider,
+		public menuCtrler:MenuController,public navParams: NavParams,private sanitize:DomSanitizer,
+		public navCtrl: NavController,public popoverController: PopoverController) 
+		{
+			//navParams是跳转到这个页面的路由传来的参数
+			//获取科目、？、锚点
+			this.subject=navParams.get('subject') || "che";
+			this.id=navParams.get('id') || 3;
+			this.positon=navParams.get('pos') || "2";
+		}
+	tapEvent(ev){
+		console.log("事件长按");
+		console.log(ev.pointerType)
+		console.log(ev.target.innerHTML);
+		console.log("收藏了");
+		console.log(ev.target.attributes.name.textContent);
 	}
-}
+
+  //弹出框
+ 	async presentPopover(ev){
+		console.log("事件点击");
+		console.log(ev.pointerType);
+		console.log(ev.target.innerHTML);
+		console.log(ev);
+		this.clickText = ev.target.innerHTML;
+		this.popOverResult=this.allresult.popOver(this.clickText);
+		if(this.popOverResult.linkExit==false&&this.popOverResult.exampleExit==false)
+		console.log(" ");
+		else{
+			let popover=this.popoverController.create(ListPage,{data:this.popOverResult},{});
+			let pos ={
+				target : {
+				getBoundingClientRect : () => {
+					return {
+					top: ev.target.getBoundingClientRect().y+ev.target.getBoundingClientRect().height+10,
+					left: ev.target.getBoundingClientRect().left-30
+					};
+				}
+				}
+			};
+		popover.present({ev:pos});
+		}
+	}
 
 
   getDetailResultA() {
 		this.getDetailResult(this.subject,this.id);
-		console.log("123");
 		console.log(UserInfo.loginState);
   }
   
@@ -197,7 +210,13 @@ export class HomePage {
 			a.dispatchEvent(e);
 			},0)//延迟调用imageviewer
 		}
-
 	}
-
+	tipOfIdAndName(ev){
+		console.log(ev.target);
+		// var id=ev.target.attributes.name.value;
+		// var name=ev.target.innerHTML;
+		// console.log(id);
+		// console.log(name);
+		// alert("id:"+id+"   "+"标题："+name)
+	}
 }
