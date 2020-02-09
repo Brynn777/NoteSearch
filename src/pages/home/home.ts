@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavParams,NavController,MenuController } from 'ionic-angular';
+import { ToastController } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserInfo } from '../../app/app.module';
 import { AllresultProvider } from '../../providers/allresult/allresult';
@@ -16,6 +17,9 @@ import { ListPage } from '../list/list';
   //providers ：使用一个 令牌 配置该指令或组件的 注入器，该令牌会映射到一个依赖项的提供商
 })
 export class HomePage {
+
+	scroll:boolean = false;
+	loginTip:boolean = false;
 
   //页面是否在加载
   pageState:string = "loading";
@@ -42,9 +46,12 @@ export class HomePage {
   //popover结果
   popOverResult:any;
   //决定页面内容
+
+  items: string[];
+
 	constructor(public imgViewerCtrl:ImageViewerController,public allresult:AllresultProvider,
 		public menuCtrler:MenuController,public navParams: NavParams,private sanitize:DomSanitizer,
-		public navCtrl: NavController,public popoverController: PopoverController) 
+		public navCtrl: NavController,public popoverController: PopoverController,public toastCtrl: ToastController,) 
 		{
 			//navParams是跳转到这个页面的路由传来的参数
 			//获取科目、？、锚点
@@ -52,15 +59,65 @@ export class HomePage {
 			this.id=navParams.get('id') || 3;
 			this.positon=navParams.get('pos') || "2";
 		}
-	tapEvent(ev){
-		console.log("事件长按");
-		console.log(ev.pointerType)
-		console.log(ev.target.innerHTML);
-		console.log("收藏了");
-		console.log(ev.target.attributes.name.textContent);
-	}
 
-  //弹出框
+	async showToast(msg:string){
+		const toast=await this.toastCtrl.create({
+		message:msg,
+		duration:2000,
+		position:"bottom"
+		});
+		toast.present();
+	}
+	changeLoginTip() {
+		this.loginTip = true;
+		this.showToast("您可随时在首页选择登录");
+	}
+	changeShow() {
+		console.log("滑动");
+		this.scroll = !this.scroll;
+	}
+	goBack() {
+		this.navCtrl.pop();
+	}
+	getItems(ev: any) {
+		console.log("触发搜索框")
+		this.initializeItems();
+		const val = ev.target.value;
+		if (val && val.trim() != '') {
+			this.items = this.items.filter((item) => {
+				return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+			})
+		}
+		console.log(this.items);
+	}
+	initializeItems() {
+		this.items = [
+		  'Amsterdam',
+		  'Bogota',
+		];
+	}
+	tapEvent(ev){
+		var a= document.getElementById(ev);
+		
+		console.log(a.getAttribute('title'));
+		if(a.getAttribute('title')=='no')
+		{
+			a.style.backgroundColor="rgb(251,229,214)"
+			a.setAttribute('title','yes')
+			this.showToast("该段内容已收藏");
+		}
+		// console.log(a.style.backgroundColor)
+
+		else {
+			a.style.backgroundColor="rgb(255, 255, 255)";
+			a.setAttribute('title','no')
+			this.showToast("该段内容已取消收藏");	
+		}
+			
+
+
+	}
+  	//弹出框
  	async presentPopover(ev){
 		console.log("事件点击");
 		console.log(ev.pointerType);

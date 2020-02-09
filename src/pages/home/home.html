@@ -1,20 +1,18 @@
-<ion-header class="barfix">
-  <button ion-button large navPop color="light" clear>
-    <ion-icon name="arrow-back" style="font-weight: 900;color:rgb(11, 67, 73)"></ion-icon>
-  </button>
+<!-- 顶部搜索栏 -->
+<ion-header [hidden]="scroll" class="barfix">
+  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+  <span id="myButton">目录</span>
 </ion-header>
 
+<!-- 目录 -->
 <ion-menu side="right" [content]="content">
-
   <ion-header class="menuheadfix">
     <ion-navbar>
       <ion-title>目录</ion-title>
     </ion-navbar>
   </ion-header>
-
   <ion-content>
     <!--side menu-->
-
     <div [hidden]="pageState!='interneterror' " class="pagestatewraper">
       <div style="display:table-cell">
         <div>
@@ -25,7 +23,6 @@
         <p>网络错误，请稍后再试</p>
       </div>
     </div>
-
     <div [hidden]="pageState!='loading'" class="pagestatewraper">
       <div style="display:table-cell">
         <div>
@@ -36,7 +33,6 @@
         <p>加载中...</p>
       </div>
     </div>
-
     <div class="menulist" [hidden]="pageState!='loaded'">
       <div id="subitem" *ngFor="let it of itemList.son">
         <p id="title" (click)="inPageGoto(it.id)" [innerHTML]="it.name"></p>
@@ -44,12 +40,12 @@
       </div>
     </div>
   </ion-content>
-
 </ion-menu>
-<ion-nav #content swipeBackEnabled="false"></ion-nav>
 
+  <!-- <ion-nav #content swipeBackEnabled="false"></ion-nav> -->
+
+<!-- 主体 -->
 <ion-content padding class="contentcardfix darkback">
-
   <div [hidden]="pageState!='interneterror' " class="pagestatewraper">
     <div style="display:table-cell">
       <div>
@@ -60,7 +56,6 @@
       <p>网络错误，请稍后再试</p>
     </div>
   </div>
-
   <div [hidden]="pageState!='loading'" class="pagestatewraper">
     <div style="display:table-cell">
       <div>
@@ -71,74 +66,67 @@
       <p>加载中...</p>
     </div>
   </div>
+    <img name="bigPicShower" #bigPicShower src="{{picUrl}}" imageViewer />
+    <!-- <div>这是什么图片？</div> -->
 
   <div [hidden]="pageState!='loaded'">
-    <!-- <img name="bigPicShower" #bigPicShower src="{{picUrl}}" imageViewer /> -->
-    <!-- <div>这是什么图片？</div> -->
-    <ion-list>
-      <!-- <div>二级目录集合</div> -->
-      <ion-card class="titlecardfix tipBox">
+    <ion-list >
+      <div [hidden]="loginTip" style="background:linear-gradient(-45deg,#E7F8FD,#FFFBFF);margin:25px;border-radius: 15px;text-align: center;padding:10px;color: #7F7F7F;box-shadow: 0 0 5px 2px #64646457;">
+        <div style="font-size: 20px;">登录以使用更多功能</div>
+        <div style="font-size: 16px;margin:20px 10px">可使用微信/QQ快捷登录成为会员以启用收藏知识点、跳转功能</div>
+        <div style="display:flex">
+          <div (tap)="changeLoginTip()" style="color:#ffffff;background:linear-gradient(-45deg,#F8A581,#F7BDA4);margin-right:10px;border: 1px solid #ED7D31;width:30%;font-size: 15px;border-radius: 5px;line-height: 40px;">不再提示</div>
+          <div style="color:#ffffff;background:linear-gradient(-45deg,#9CCA86,#B5D5A7);border: 1px solid #70AD47;width:70%;font-size: 15px;border-radius: 5px;line-height: 40px;">登录</div>
+        </div>
+      </div>
+<!-- 标题栏 -->
+      <!-- 二级目录和一级目录左边都是25px -->
+      <div id="detail" style="margin:0 25px 25px;border-bottom:1px solid #7a7a7a">
+        <!-- 一级标题 -->
         <p id="title" [innerHTML]="(itemList|dsPipe:inPageSearchText).name"
-          style="margin: 0.5em 1em 0.2em;font-weight:700;font-size: 1.8em;color:rgb(42, 73, 75);">
+          style="margin: 18px 0em 5px 0;font-weight:700;font-size: 1.8em;color:#000000;">
         </p>
         <hr style="color:#000000">
-        <div id="detail" style="padding:0em 2em">
-          <div *ngFor="let it of (itemList|dsPipe:inPageSearchText).son" style="margin: 1em;">
-            <a (click)="inPageGoto(it.id)" [innerHTML]="it.name"
-              style="font-size:1.2em;color:rgb(82, 145, 150);font-weight:700"></a>
-            <p [innerHTML]="it.content" (click)=(showBigPic($event))
-              style="margin-left: 2em;color:rgb(123, 169, 173);font-size: 1.05em;font-weight:700"></p>
-          </div>
+        <!-- 二级目录集合-->
+        <div *ngFor="let it of (itemList|dsPipe:inPageSearchText).son" style="margin: 1em 0em;">
+          <a (click)="inPageGoto(it.id)" [innerHTML]="it.name" style="font-size:1.3em;color:#22B4D1"></a>
+          <p [innerHTML]="it.content" (click)=(showBigPic($event))
+            style="margin-left: 38px;color:#22B4D1;font-size: 1em"></p>
         </div>
-      </ion-card>
-      <hr style="color:#000000">
-      <ion-card class="cardcardfix secBox" *ngFor="let it of (itemList|dsPipe:inPageSearchText).son">
+      </div>
+
+<!-- 正文 -->
+      <div style="margin:0 25px; border-bottom:1px dashed #7a7a7a" *ngFor="let it of (itemList|dsPipe:inPageSearchText).son">
         <div>
-          <!-- <div style="color:red">这是一个二级标题</div> -->
-          <div>
-            <ion-icon name="filing" style="margin:0 5px;font-size:1.3em"></ion-icon>
-            <div id="title" attr.name="{{it.id}}" [innerHTML]="it.name"
-              style="font-size:1.2em;color:rgb(0, 0, 0);font-weight:700;display: inline-block;line-height:1.3em"
-              (tap)="presentPopover($event)" (press)="tapEvent($event)">
+          <!-- 一个二级标题 -->
+          <div id="title" attr.name="{{it.id}}" [innerHTML]="it.name"
+            style="margin: 10px 0 20px;font-size:1.3em;color:rgb(0, 0, 0);line-height:1.3em"
+            (tap)="presentPopover($event)">
+          </div>
+        </div>
+        <div id="main">
+          <div id="detail" style="-webkit-box-orient : block-axis;margin-bottom:10px">
+            <!-- 一个三级块 -->
+            <div title="no" id="sondetail" style="border-radius: 10px;background-color:rgb(255, 255, 255);padding:10px 0" *ngFor="let dt of it.son" attr.name="{{dt.id}}" id="{{dt.id}}" (press)="tapEvent(dt.id)">
+              <!-- 一个三级标题 -->
+              <div id="sontitle" [innerHTML]="dt.name" (tap)="presentPopover($event)"
+                style="margin-bottom:10px;font-size:1.2em;color:rgb(3, 3, 3);line-height:1.2em">
+              </div>
+              <div style="margin: 14px" id="grandsondetail" [innerHTML]="dt.content" (click)=(showBigPic($event))></div>
             </div>
           </div>
         </div>
-        <div id="main" style="padding:0px 2em">
-          <div id="detail" style="-webkit-box-orient : block-axis">
-            <div id="sondetail" *ngFor="let dt of it.son" attr.name="{{dt.id}}">
-              <!-- <div style="color:red">这是一个三级标题</div> -->
-              <br>
-              <hr style="height:0px;
-              border-top:1px dotted rgb(235, 235, 235)">
-              <ion-icon name="clipboard" style="margin:0px 5px 0px -20px;font-size:1.3em;font-weight:600"></ion-icon>
-              <div 
-                id="sontitle" 
-                attr.name="{{dt.id}}" 
-                [innerHTML]="dt.name" 
-                (tap)="presentPopover($event)" 
-                style="display:inline-block;font-size:1.1em;font-weight:600;color:rgb(25, 45, 46);line-height:1.3em"
-                (press)="tapEvent($event)">
-              </div>
-              <br><br>
-              <div id="grandsondetail" [innerHTML]="dt.content" (click)=(showBigPic($event))>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ion-card>
+      </div>
+
     </ion-list>
   </div>
 
-  <ion-fab right bottom class="fabpositionfix" >
-    <button ion-fab color="light" style="background-color:rgb(86, 190, 197);box-shadow: 0px 2px 5px 3px rgba(0, 0, 0, 0.14)">
-      <!--getPageState()-->
-      <div style="color:black;font-weight:700;font-size:1.1em">
-        目录
+  <ion-fab right bottom class="fabpositionfix">
+    <button (click)="goBack()" ion-fab
+      style="background-color:rgb(162, 216, 226);border:1px solid rgb(82, 174, 250);box-shadow: 0px 0px 0px 0px rgba(68, 68, 68, 0.171)">
+      <div style="color:rgb(255, 255, 255);font-size:1.1em">
+        返回
       </div>
-      <!--<ion-icon name="arrow-back"></ion-icon>-->
     </button>
   </ion-fab>
-  <!--
-  <div [MathJax]="mathjaxtest"></div>
-  -->
 </ion-content>
