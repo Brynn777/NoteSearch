@@ -248,22 +248,16 @@ export class HomePage {
 	}
 
 	showBigPic($event){
-		/*const popover = this.popoverCtrl.create(ListPage);
-		popover.present();*/
-		
 		var maker = $event.path[0];
 		if(maker.className=="detailPicHolder"){
 			this.picUrl = maker.src;//获取点击图片的路径
+			console.log("结点")
 			console.log(document.getElementsByName("bigPicShower")[0]);
-			/*var a = document.getElementsByName("bigPicShower")[0];
-			var e = document.createEvent('MouseEvent'); 
-			e.initEvent('click', false, false); 
-			a.dispatchEvent(e);*/
-
 			setTimeout(function(){
-				var a = document.getElementsByName("bigPicShower")[0];
+			var a = document.getElementsByName("bigPicShower")[0];
 			var e = document.createEvent('MouseEvent'); 
 			e.initEvent('click', false, false); 
+			console.log(e);
 			a.dispatchEvent(e);
 			},0)//延迟调用imageviewer
 		}
